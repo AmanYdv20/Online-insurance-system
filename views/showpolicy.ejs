@@ -8,10 +8,13 @@
 
     <a href="/policy/<%= foundPolicy._id %>/register" class="btn btn-primary">Buy Policy</a>
 
-    <a href="/policy/<%= foundPolicy._id %>/edit" class="btn btn-warning">Edit Policy</a>
-    <form action="/policy/<%= foundPolicy._id%>?_method=DELETE" method="POST">
-        <button class="btn btn-danger">Delete</button>
-    </form>
+    <% if(currentUser.isAdmin){ %>
+
+        <a href="/policy/<%= foundPolicy._id %>/edit" class="btn btn-warning">Edit Policy</a>
+        <form action="/policy/<%= foundPolicy._id%>?_method=DELETE" method="POST">
+           <button class="btn btn-danger">Delete</button>
+        </form>
+    <% } %>
 </div>
 
 

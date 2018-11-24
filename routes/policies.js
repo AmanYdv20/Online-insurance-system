@@ -15,9 +15,9 @@ router.get("/", function(req,res){
     })
 });
 
-router.get("/new", function(req,res){
-    console.log(req.user);
-    res.render("new");
+router.get("/new", adminPermission, function(req,res){
+        res.render("new");
+    
 });
 
 router.post("/", function(req, res){
@@ -35,7 +35,7 @@ router.get("/:id", function(req, res){
         if(err){
             res.redirect("/policies");
         } else {
-            res.render("showpolicy", {foundPolicy: foundPolicy});
+            res.render("showpolicy", {foundPolicy: foundPolicy, currentUser: req.user});
         }
     })
 });
@@ -103,5 +103,13 @@ router.delete("/:id", function(req,res){
         }
     })
 });
+
+function adminPermission(req, res, next) {
+    if (req.isAuthenticated()&&req.user.isAdmin) {
+      return next();
+    }
+  
+    res.send("Sorry!! You don't have the permission to visit this page");
+  }
 
 module.exports=router;
