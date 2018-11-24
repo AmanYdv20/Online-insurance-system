@@ -1,0 +1,15 @@
+<% include partials/header %>
+<div class="container">
+    <h1>this is for individual vehicle</h1>
+    <h2><%= foundVehicle.name%></h2>
+    <h2><%= foundVehicle.type%></h2>
+    <h2><%= foundVehicle.description%></h2>
+    <h2><%= foundVehicle.duration%></h2>
+
+    <a href="/vehicles/<%= foundVehicle._id %>/register" class="btn btn-primary">Buy Policy</a>
+    
+</div>
+
+
+<%include partials/footer %>
+
