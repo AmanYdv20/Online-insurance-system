@@ -5,6 +5,7 @@ var mongoose=require("mongoose");
 var passport=require("passport");
 var LocalStrategy=require("passport-local");
 var seedDB = require("./seed");
+var flash = require("connect-flash");
 var User=require("./models/user");
 var methodOverride=require("method-override");
 var Policy=require("./models/policy");
@@ -29,15 +30,25 @@ app.use(require('express-session')({
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use(function (req, res, next) {
+    res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
+    next();
+});
 
 //seedDB();
 app.use("/vehicles", vehicleRoute);
 app.use("/life", lifeRoute);
 app.use("/policy", policyRoute);
 app.use(authRoute);
+
+
 
 //post  route to handle the new policy
 

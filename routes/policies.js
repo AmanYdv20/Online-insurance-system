@@ -1,6 +1,7 @@
 var express=require("express");
 var router=express.Router();
 var User=require("../models/user");
+var middleware = require("../middleware");
 
 var Policy=require("../models/policy");
 
@@ -15,7 +16,7 @@ router.get("/", function(req,res){
     })
 });
 
-router.get("/new", adminPermission, function(req,res){
+router.get("/new", middleware.adminPermission, function(req,res){
         res.render("new");
     
 });
@@ -35,12 +36,12 @@ router.get("/:id", function(req, res){
         if(err){
             res.redirect("/policies");
         } else {
-            res.render("showpolicy", {foundPolicy: foundPolicy, currentUser: req.user});
+            res.render("showpolicy", {foundPolicy: foundPolicy});
         }
     })
 });
 
-router.get("/:id/register", function(req,res){
+router.get("/:id/register", middleware.isLoggedIn, function(req,res){
     Policy.findById(req.params.id, function(err, foundEntry){
         if(err){
             res.redirect("vehicles");
@@ -51,7 +52,7 @@ router.get("/:id/register", function(req,res){
     })
 });
 
-router.post("/:id", function(req,res){
+router.post("/:id",middleware.isLoggedIn, function(req,res){
     Policy.findById(req.params.id, function(err, foundPolicy){
         if(err){
             console.log(err);
@@ -73,7 +74,7 @@ router.post("/:id", function(req,res){
     })
 });
 
-router.get("/:id/edit", function(req, res){
+router.get("/:id/edit", middleware.adminPermission, function(req, res){
     Policy.findById(req.params.id, function(err, foundPolicy){
         if(err){
             console.log(err);
@@ -83,7 +84,7 @@ router.get("/:id/edit", function(req, res){
     })
 });
 
-router.put("/:id", function(req, res){
+router.put("/:id", middleware.adminPermission, function(req, res){
     Policy.findByIdAndUpdate(req.params.id, req.body.policy, function(err, updatedPolicy){
         if(err){
             res.redirect("policy");
@@ -94,7 +95,7 @@ router.put("/:id", function(req, res){
 
 });
 
-router.delete("/:id", function(req,res){
+router.delete("/:id", middleware.adminPermission, function(req,res){
     Policy.findByIdAndRemove(req.params.id, function(err){
         if(err){
             res.redirect("/policy");
@@ -103,13 +104,5 @@ router.delete("/:id", function(req,res){
         }
     })
 });
-
-function adminPermission(req, res, next) {
-    if (req.isAuthenticated()&&req.user.isAdmin) {
-      return next();
-    }
-  
-    res.send("Sorry!! You don't have the permission to visit this page");
-  }
 
 module.exports=router;

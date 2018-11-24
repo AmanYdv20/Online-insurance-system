@@ -2,6 +2,7 @@ var express=require("express");
 var router=express.Router();
 
 var Policy=require("../models/policy");
+var middleware=require("../middleware");
 
 //vehicle route
 router.get("/", function(req,res){
@@ -24,7 +25,7 @@ router.get("/:id", function(req, res){
     })
 });
 
-router.get("/:id/register", function(req,res){
+router.get("/:id/register", middleware.isLoggedIn, function(req,res){
     Policy.findById(req.params.id, function(err, foundEntry){
         if(err){
             res.redirect("vehicles");

@@ -18,7 +18,7 @@ router.post("/register", function(req,res){
         var newUser=new User({firstname: req.body.firstname,
              lastname: req.body.lastname,
              username: req.body.username,
-            emailAddress: req.body.emailAddress,
+             emailAddress: req.body.emailAddress,
              gender: req.body.gender,
              address: req.body.address,
              city: req.body.city,
@@ -38,6 +38,7 @@ router.post("/register", function(req,res){
             return res.render('register');
         }
         passport.authenticate('local')(req,res,() => {
+            req.flash("success", "Welcome "+req.body.username+" to Insurance Management System");
             res.redirect('/policy');
         });
     });
@@ -58,6 +59,7 @@ router.post('/login', passport.authenticate('local', {
 
 router.get('/logout', (req, res)=> {
     req.logout();
+    req.flash("success", "Logged You out!!");
     res.redirect('/');
 });
 
