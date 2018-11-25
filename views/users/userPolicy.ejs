@@ -1,0 +1,61 @@
+<% include ../partials/header %>
+    <div class="container">
+            <div class="row">
+                <div class="col-md-3 ">
+                     <div class="list-group ">
+                      <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
+                      <a href="#" class="list-group-item list-group-item-action active">Policies</a>
+                      <a href="#" class="list-group-item list-group-item-action">Edit Profile</a>
+                      
+                      
+                    </div> 
+                </div>
+                <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                        <table class="table">
+                                                <thead>
+                                                  <tr>
+                                                    <div class="col-md-2">
+                                                        <th scope="col">#</th>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <th scope="col">Name</th>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <th scope="col">details</th>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <th scope="col">Withdraw</th>
+                                                    </div>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <tr>
+                                                    <th scope="row">1</th>
+                                                    <td><%=userPolicy[0].name%></td>
+                                                    <td>withdraw</td>
+                                                    <td>delete</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <th scope="row">2</th>
+                                                    <td>Jacob</td>
+                                                    <td>Thornton</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <th scope="row">3</th>
+                                                    <td>Larry</td>
+                                                    <td>the Bird</td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                </div>
+                            </div>
+                        </div>        
+                </div>
+            </div>
+    </div>
+
+
+<%include ../partials/footer %>

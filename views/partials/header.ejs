@@ -20,10 +20,15 @@
           <nav class="my-2 my-md-0 mr-md-3">
             <a class="p-2 text-dark" href="#">About Us</a>
             <a class="p-2 text-dark" href="#">Policy</a>
-            <a class="p-2 text-dark" href="/logout">Logout</a>
           </nav>
-          <a class="btn btn-outline-primary" href="/register">Sign up</a>
-          <a class="btn btn-outline-primary" href="/login">Log in</a>
+          <% if(!currentUser) { %>
+            <a class="btn btn-outline-primary" href="/register">Sign up</a>
+            <a class="btn btn-outline-primary" href="/login">Log in</a>
+          <%} else { %>
+            <a class="p-2 text-dark" href="/users/<%=currentUser._id%>">Profile</a>
+            <a class="btn btn-outline-primary" href="/logout">Log out</a>
+          <% } %>
+          
       </div>
 
       <% if(error&&error.length>0){ %>

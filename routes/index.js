@@ -63,5 +63,28 @@ router.get('/logout', (req, res)=> {
     res.redirect('/');
 });
 
+//profile routes
+router.get('/users/:id', function(req,res){
+    User.findById(req.params.id, function(err, foundUser){
+        //console.log(foundUser.policies[0].name);
+        res.render("users/profile", {foundUser: foundUser});
+    });
+    
+});
+
+router.get('/users/:id/policies', function(req, res){
+    User.findById(req.params.id).populate('policies').exec(function(err, foundUser){
+        //console.log(foundUser.policies[0].name);
+        if(err){
+            req.flash("error", "Something went wrong");
+            res.redirect("/users/"+req.params.id);
+        }
+
+
+        res.render("users/userPolicy", {userPolicy: foundUser.policies});
+
+    })
+});
+
 module.exports=router;
 
