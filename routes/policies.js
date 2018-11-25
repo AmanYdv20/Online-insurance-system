@@ -58,10 +58,25 @@ router.post("/:id",middleware.isLoggedIn, function(req,res){
             console.log(err);
             res.redirect("/login");
         } else {
-            console.log(foundPolicy);
-            foundPolicy.customers.push(req.user._id);
-            foundPolicy.save();
-            User.findById(req.user._id, function(err, foundUser){
+            // var flag=flase;
+            //     for(var i=0;i<foundPolicy.customers.length;i++){
+            //         if(foundPolicy.customers[i]._id===req.user._id){
+            //             console.log("same");
+            //             flag=true;
+            //             req.flash("error", "You have already registered to this Policy");
+            //             res.redirect('/policy');
+            //         }
+            //     } 
+            var arr=foundPolicy.customers;
+            var id=req.user._id;            
+            var flag=arr.indexOf(id);
+            //eval(require('locus'));
+            //console.log(foundPolicy);
+            if(flag===-1){
+                console.log("execute");
+                foundPolicy.customers.push(req.user._id);
+                foundPolicy.save();
+                User.findById(req.user._id, function(err, foundUser){
                 if(err){
                     console.log(err);
                 } else{
@@ -69,7 +84,12 @@ router.post("/:id",middleware.isLoggedIn, function(req,res){
                     foundUser.save();
                 }
             });
+            req.flash("success", "Thank You for opting a policy for a better future of your family!! Have a nice day.");
             res.redirect("/policy/"+foundPolicy._id);
+            } else {
+                req.flash("error", "Sorry!! You already have subscribed this policy");
+                res.redirect("/policy/"+foundPolicy._id);
+            }
         }
     })
 });

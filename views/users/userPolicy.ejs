@@ -3,7 +3,7 @@
             <div class="row">
                 <div class="col-md-3 ">
                      <div class="list-group ">
-                      <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
+                      <a href="/users/<%=currentUser._id%>" class="list-group-item list-group-item-action">Dashboard</a>
                       <a href="#" class="list-group-item list-group-item-action active">Policies</a>
                       <a href="#" class="list-group-item list-group-item-action">Edit Profile</a>
                       
@@ -32,22 +32,14 @@
                                                   </tr>
                                                 </thead>
                                                 <tbody>
-                                                  <tr>
-                                                    <th scope="row">1</th>
-                                                    <td><%=userPolicy[0].name%></td>
-                                                    <td>withdraw</td>
-                                                    <td>delete</td>
-                                                  </tr>
-                                                  <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Jacob</td>
-                                                    <td>Thornton</td>
-                                                  </tr>
-                                                  <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Larry</td>
-                                                    <td>the Bird</td>
-                                                  </tr>
+                                                    <% for(var i=0;i<userPolicy.length; i++){ %>
+                                                        <tr>
+                                                            <th scope="row"><%=i+1%></th>
+                                                            <td><%=userPolicy[i].name%></td>
+                                                            <td><a href="/policy/<%=userPolicy[i]._id%>" class="btn btn-primary" role="button">Details</a></td>
+                                                            <td><a href="/users/<%=userPolicy[i]._id%>/delete" class="btn btn-danger" role="button">Withdraw</a></td>
+                                                        </tr>
+                                                    <% } %>
                                                 </tbody>
                                               </table>
                                 </div>

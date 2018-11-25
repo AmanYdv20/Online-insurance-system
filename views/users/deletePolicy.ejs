@@ -1,0 +1,39 @@
+<% include ../partials/header %>
+<% if(currentUser){ %>
+    <div class="container">
+            <div class="row">
+                <div class="col-md-3 ">
+                     <div class="list-group ">
+                      <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
+                      <a href="/users/<%=currentUser._id%>/policies" class="list-group-item list-group-item-action">Policies</a>
+                      <a href="#" class="list-group-item list-group-item-action">Edit Profile</a>
+                      
+                      
+                    </div> 
+                </div>
+                <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4><%=foundPolicy.name%></h4>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h1>Are you confirm to delete</h1>
+                                        <form action="/users/delete/<%= foundPolicy._id%>" method="GET">
+                                            <button class="btn btn-danger">Confirm</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </div>
+<% } %>
+
+
+<%include ../partials/footer %>

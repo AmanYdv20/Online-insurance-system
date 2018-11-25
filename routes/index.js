@@ -1,7 +1,9 @@
 var express=require("express");
 var router=express.Router();
 var passport=require("passport");
+var middleware=require("../middleware")
 var User=require("../models/user");
+var Policy=require("../models/policy");
 //index routes
 router.get('/', function(req,res){
     res.render("index");
@@ -80,10 +82,45 @@ router.get('/users/:id/policies', function(req, res){
             res.redirect("/users/"+req.params.id);
         }
 
+        //eval(require('locus'));
 
         res.render("users/userPolicy", {userPolicy: foundUser.policies});
 
     })
+});
+
+router.get('/users/:id/delete', middleware.isLoggedIn, function(req, res){
+   Policy.findById(req.params.id, function(err, foundPolicy){
+       if(err){
+           console.log(err);
+           res.redirect("/users"+foundPolicy._id);
+       }
+       res.render("users/deletePolicy", {foundPolicy: foundPolicy});
+   });
+});
+
+router.get("/users/delete/:id", function(req,res){
+    // User.update(req.user._id, {$pullAll: {policies: req.params.id}});
+    // res.redirect("/users/"+req.user._id);
+    User.findById(req.user._id, function(err, foundUser){
+        if(err){
+            res.redirect("/");
+        }
+        var arr=foundUser.policies;
+        var id=req.params.id;
+        var flag=arr.indexOf(id);
+        foundUser.policies.splice(flag,1);
+        foundUser.save();
+        Policy.findById(req.params.id, function(err, foundPolicy){
+            var customer=foundPolicy.customers;
+            var id2=req.user._id;
+            var idx=customer.indexOf(id2);
+            foundPolicy.customers.splice(idx,1);
+            foundPolicy.save();
+        });
+        //eval(require('locus'));
+        res.redirect("/users/"+req.user._id);
+    });
 });
 
 module.exports=router;
