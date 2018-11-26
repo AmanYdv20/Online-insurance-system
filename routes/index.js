@@ -17,6 +17,13 @@ router.get("/register", function(req,res){
 
 // //yaha pe kuch galti thi register and authentication k time pe
 router.post("/register", function(req,res){
+    const user = User.findOne({'email': req.body.emailAddress});
+    //eval(require('locus'));
+    if(user){
+        req.flash("error", "Email Address is already in use. Please provide another Email address");
+        res.redirect("/register");
+        return;
+    }
         var newUser=new User({firstname: req.body.firstname,
              lastname: req.body.lastname,
              username: req.body.username,
