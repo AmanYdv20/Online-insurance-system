@@ -48,6 +48,10 @@ app.use("/life", lifeRoute);
 app.use("/policy", policyRoute);
 app.use(authRoute);
 
+app.get('/test', function(req, res){
+    res.render("test");
+})
+
 
 
 //post  route to handle the new policy
