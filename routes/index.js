@@ -82,18 +82,46 @@ router.get('/users/:id', function(req,res){
 });
 
 router.get('/users/:id/policies', function(req, res){
-    User.findById(req.params.id).populate('policies').exec(function(err, foundUser){
-        //console.log(foundUser.policies[0].name);
-        if(err){
-            req.flash("error", "Something went wrong");
-            res.redirect("/users/"+req.params.id);
-        }
+    if(req.user.isAdmin){
+        Policy.find({}, function(err, policies){
+            if(err){
+                console.log(err);
+                res.redirect("/");
+                //return;
+            }
 
-        //eval(require('locus'));
+            User.find({}, function(err, totalUsers){
+                if(err){
+                    console.log(err);
+                    res.redirect("/");
+                    //return;
+                }
+                res.render("admin/home", {foundPolicies: policies, totalUsers: totalUsers});
+            });
 
-        res.render("users/userPolicy", {userPolicy: foundUser.policies});
-
-    })
+        });
+    } else{
+        User.findById(req.params.id).populate('policies').exec(function(err, foundUser){
+            if(req.user.isAdmin){
+                
+            }
+            //console.log(foundUser.policies[0].name);
+            if(err){
+                req.flash("error", "Something went wrong");
+                res.redirect("/users/"+req.params.id);
+            }
+    
+            //eval(require('locus'));
+            if(!req.user.isAdmin){
+                res.render("users/userPolicy", {userPolicy: foundUser.policies});
+            } else {
+                
+            }
+            
+    
+        });
+    }
+    
 });
 
 router.get('/users/:id/delete', middleware.isLoggedIn, function(req, res){
