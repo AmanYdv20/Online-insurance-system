@@ -1,20 +1,39 @@
 <% include partials/header %>
+
 <div class="container">
-    <h1>this is for individual vehicle</h1>
-    <h2><%= foundPolicy.name%></h2>
-    <h2><%= foundPolicy.type%></h2>
-    <h2><%= foundPolicy.description%></h2>
-    <h2><%= foundPolicy.duration%></h2>
+        <div class="card text-center">
+                <div class="card-header">
+                        <%= foundPolicy.type%>
+                </div>
+                <div class="card-body">
+                  <h3 class="card-title"><%= foundPolicy.name%></h3>
+                  <p class="card-text"><%= foundPolicy.description%></p>
+                  <div style="display: inline;">
 
-    <a href="/policy/<%= foundPolicy._id %>/register" class="btn btn-primary">Buy Policy</a>
-
-    <% if(currentUser && currentUser.isAdmin){ %>
-
-        <a href="/policy/<%= foundPolicy._id %>/edit" class="btn btn-warning">Edit Policy</a>
-        <form action="/policy/<%= foundPolicy._id%>?_method=DELETE" method="POST">
-           <button class="btn btn-danger">Delete</button>
-        </form>
-    <% } %>
+                        <% if(currentUser && currentUser.isAdmin){ %>
+                        
+                                    <a href="/policy/<%= foundPolicy._id %>/edit" class="btn btn-warning">Edit Policy</a>
+                                    <form action="/policy/<%= foundPolicy._id%>?_method=DELETE" method="POST">
+                                       <button class="btn btn-danger">Delete</button>
+                                    </form>
+                        
+                        <% } else {%>
+                            <a href="/policy/<%= foundPolicy._id %>/register" class="btn btn-primary">Buy Policy</a>
+                        <% } %>
+                </div>
+                </div>
+                <div class="card-footer">
+                    <h5>Policy Number: <small><%=foundPolicy.number%></small></h5>
+                    <h5>Total Duration: <small><%=foundPolicy.duration%> Years</small></h5>
+                    <h5>Total Installment: <small><%=foundPolicy.installment%> k/month</small></h5>
+                    <h5>Net Money deposited: <small><%=foundPolicy.netMoney%> Lakhs</small></h5>
+                    <h5>Profit: <small><%=foundPolicy.profit%> Lakhs</small></h5>
+                </div>
+                
+                <!-- <div class="card-footer text-muted">
+                  2 days ago
+                </div> -->
+              </div>
 </div>
 
 

@@ -4,14 +4,9 @@
                 <div class="col-md-3 ">
                      <div class="list-group ">
                       <a href="/users/<%=currentUser._id%>" class="list-group-item list-group-item-action">Dashboard</a>
-                      <% if(currentUser.isAdmin){ %>
-                        <a href="/users/a25d3m69in/policies" class="list-group-item list-group-item-action active">Policies</a>
-                      <%} else{%>
-                        <a href="/users/<%=foundUser._id%>/policies" class="list-group-item list-group-item-action active">Policies</a>
-                      <%}%>
-                      <!-- <a href="#" class="list-group-item list-group-item-action active">Policies</a> -->
+                      <a href="users/<%=foundUser._id%>/policies" class="list-group-item list-group-item-action">Policies</a>
                       <a href="/admin/verified" class="list-group-item list-group-item-action">Verified Users</a>
-                      <a href="/admin/unverified" class="list-group-item list-group-item-action">Unverified Users</a>
+                      <a href="/admin/unverified" class="list-group-item list-group-item-action active">Unverified Users</a>
                       <a href="/users/<%=currentUser._id%>/edit" class="list-group-item list-group-item-action">Edit Profile</a>
                       
                     </div> 
@@ -38,12 +33,12 @@
                                                   </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <% for(var i=0;i<foundPolicies.length; i++){ %>
+                                                    <% for(var i=0;i<foundUser.length; i++){ %>
                                                         <tr>
                                                             <th scope="row"><%=i+1%></th>
-                                                            <td><%=foundPolicies[i].name%></td>
-                                                            <td><%=foundPolicies[i].type%></td>
-                                                            <td><a href="/policy/<%=foundPolicies[i]._id%>" class="btn btn-danger" role="button">Details</a></td>
+                                                            <td><%=foundUser[i].username%></td>
+                                                            <td>unverified</td>
+                                                            <td><a href="/users/<%=foundUser[i]._id%>" class="btn btn-danger" role="button">Details</a></td>
                                                         </tr>
                                                     <% } %>
                                                 </tbody>

@@ -6,12 +6,12 @@
           <div class="col-lg-4 col-md-5 col-sm-6">
           <div class="card" style="max-width: 22rem;" style="max-height: 36rem;">
             <div class="card-header">
-                    <%= result.type %>
+                    <h4 class="my-0 font-weight-normal"><%= result.type %></h4>
             </div>
             <div class="card-body">
-                <h5 class="card-title"><%= result.number %></h5>
-                <p class="card-text"><%= result.name %></p>
-                <a href="/policy/<%= result._id %>" class="btn btn-primary">More Info</a>
+                <h2 class="card-title pricing-card-title"><%= result.name %></h2>
+                <p class="card-text"><%= result.number %></p>
+                <a href="/policy/<%= result._id %>" class="btn btn-lg btn-block btn-outline-primary"0>More Info</a>
                 
             </div>
             <div class="card-footer text-muted">

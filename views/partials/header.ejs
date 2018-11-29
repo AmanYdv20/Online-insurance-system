@@ -20,6 +20,9 @@
           <nav class="my-2 my-md-0 mr-md-3">
             <a class="p-2 text-dark" href="/">About Us</a>
             <a class="p-2 text-dark" href="/policy">Policy</a>
+            <%if(currentUser&&currentUser.isAdmin){%>
+              <a class="p-2 text-dark" href="/policy/new">Add new</a>
+            <%}%>
           </nav>
           <% if(!currentUser) { %>
             <a class="btn btn-outline-primary" href="/register">Sign up</a>

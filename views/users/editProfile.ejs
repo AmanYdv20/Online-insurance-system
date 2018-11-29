@@ -1,0 +1,95 @@
+<!-- <form action="/register" method="POST">
+    <input type="text" placeholder="Username", name="username">
+    <input type="password" placeholder="Password" name="password">
+    <button>Submit</button>
+</form> -->
+<% include ../partials/header %>
+<div class="container">
+    <div class="jumbotron">
+            <form action="/users/<%=foundUser._id%>/edit?_method=PUT" method="POST">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="text">Type Username</label>
+                            <input type="text" class="form-control" name="username" placeholder="JohnDoe20" value="<%=foundUser.username%>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="text">First Name</label>
+                            <input type="text" class="form-control" name="firstname" value="<%=foundUser.firstname%>" placeholder="John" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="text">Last Name</label>
+                            <input type="text" class="form-control" name="lastname" value="<%=foundUser.lastname%>" placeholder="Doe" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                           <label for="email">Email Address</label>
+                           <input type="email" class="form-control" name="emailAddress" value="<%=foundUser.emailAddress%>" placeholder="john@company.com" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                           <label for="email">Confirm Email Address</label>
+                           <input type="email" class="form-control" name="confirmEmail" required disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                           <label for="password">Password</label>
+                           <input type="password" class="form-control" name="password" placeholder="in lakhs" required disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                           <label for="password">Confirm Password</label>
+                           <input type="password" class="form-control" name="confirmPassword" value="<%=foundUser.username%>" required disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="sel1">Gender</label>
+                            <select class="form-control" id="sel1" name="gender" value="<%=foundUser.gender%>" required>
+                              <option>Male</option>
+                              <option>Female</option>
+                              <option>Others</option>
+                            </select>
+                          </div> 
+                        <div class="form-group col-md-9">
+                            <label for="inputAddress2">Address</label>
+                            <input type="text" class="form-control" name="address" value="<%=foundUser.address%>" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                           <label for="netMoney">City</label>
+                           <input type="text" class="form-control" name="city" value="<%=foundUser.city%>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                           <label for="address">District</label>
+                           <input type="text" class="form-control" name="district" value="<%=foundUser.district%>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputZip">Pin-Code</label>
+                            <input type="number" class="form-control" name="pinCode" value="<%=foundUser.pinCode%>" required>
+                         </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                           <label for="netMoney">Phone Number</label>
+                           <input type="number" class="form-control" name="mobileNo" placeholder="9413..." value="<%=foundUser.mobileNo%>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                           <label for="Phone">Alternate Phone Number</label>
+                           <input type="number" class="form-control" name="alternateMobileNo" placeholder="7647..." value="<%=foundUser.alternateMobileNo%>" required>
+                        </div>
+                        <%if(currentUser&&currentUser.isAdmin){%>
+                            <div class="form-group col-md-4">
+                                <label for="adminCode">Verification</label>
+                                <input type="string" class="form-control" name="isVerified">
+                            </div>
+                        <%}%>
+                        
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+    </div>
+
+</div>
+
+<%include ../partials/footer %>

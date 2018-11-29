@@ -1,7 +1,7 @@
 var express=require("express");
 var router=express.Router();
 var passport=require("passport");
-var middleware=require("../middleware")
+var middleware=require("../middleware");
 var User=require("../models/user");
 var Policy=require("../models/policy");
 //index routes
@@ -17,40 +17,48 @@ router.get("/register", function(req,res){
 
 // //yaha pe kuch galti thi register and authentication k time pe
 router.post("/register", function(req,res){
-    const user = User.findOne({'email': req.body.emailAddress});
-    //eval(require('locus'));
-    if(user){
-        req.flash("error", "Email Address is already in use. Please provide another Email address");
-        res.redirect("/register");
-        return;
-    }
+    // const user = User.findOne({'email': req.body.emailAddress});
+    // eval(require('locus'));
+    // if(user){
+    //     req.flash("error", "Email Address is already in use. Please provide another Email address");
+    //     res.redirect("/register");
+    //     return;
+    // }
+    //console.log(req.body);
+    if(req.body.emailAddress===req.body.confirmEmail&&req.body.password===req.body.confirmPassword){
         var newUser=new User({firstname: req.body.firstname,
-             lastname: req.body.lastname,
-             username: req.body.username,
-             emailAddress: req.body.emailAddress,
-             gender: req.body.gender,
-             address: req.body.address,
-             city: req.body.city,
-             district: req.body.district,
-             pinCode: req.body.pinCode,
-             mobileNo: req.body.mobileNo,
-             alternateMobileNo: req.body.alternateMobileNo
-            });
+            lastname: req.body.lastname,
+            username: req.body.username,
+            emailAddress: req.body.emailAddress,
+            gender: req.body.gender,
+            address: req.body.address,
+            city: req.body.city,
+            district: req.body.district,
+            pinCode: req.body.pinCode,
+            mobileNo: req.body.mobileNo,
+            alternateMobileNo: req.body.alternateMobileNo
+           });
 
-            if(req.body.adminCode==='123secretCode'){
-                newUser.isAdmin=true;
-            }
-        //eval(require("locus"));
-        User.register(newUser, req.body.password, (err,user) => {
-        if(err){
-            console.log(err);
-            return res.render('register');
-        }
-        passport.authenticate('local')(req,res,() => {
-            req.flash("success", "Welcome "+req.body.username+" to Insurance Management System");
-            res.redirect('/policy');
-        });
-    });
+           if(req.body.adminCode==='123secretCode'){
+               newUser.isAdmin=true;
+               newUser.isVerified=true;
+           }
+       //eval(require("locus"));
+       User.register(newUser, req.body.password, (err,user) => {
+       if(err){
+           console.log(err);
+           return res.render('register');
+       }
+       passport.authenticate('local')(req,res,() => {
+           req.flash("success", "Welcome "+req.body.username+" to Insurance Management System");
+           res.redirect('/policy');
+       });
+   });
+    } else {
+        req.flash("error", "You have give both password or email id same!!!");
+        res.redirect("/register");
+    }
+        
     
  });
 
@@ -81,6 +89,40 @@ router.get('/users/:id', function(req,res){
     
 });
 
+router.get("/users/:id/edit", function(req, res){
+    User.findById(req.params.id, function(err, foundUser){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("users/editProfile", {foundUser: foundUser});
+        }
+    })
+});
+
+router.put("/users/:id/edit", function(req,res){
+    var flag=false;
+    if(req.body.isVerified=='Yes'){
+        var flag=true;
+    } 
+    User.findByIdAndUpdate(req.params.id, {firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        emailAddress:req.body.emailAddress,
+        gender: req.body.gender,
+        address: req.body.address,
+        city: req.body.city,
+        district: req.body.district,
+        isVerified: true,
+        pinCode: req.body.pinCode,
+        mobileNo: req.body.mobileNo,
+        alternateMobileNo: req.body.alternateMobileNo }, function(err, updatedUser){
+        if(err){
+            res.redirect("/");
+        } else {
+            res.redirect("/users/"+ req.user._id);
+        }
+    });
+});
+
 router.get('/users/:id/policies', function(req, res){
     if(req.user.isAdmin){
         Policy.find({}, function(err, policies){
@@ -90,14 +132,7 @@ router.get('/users/:id/policies', function(req, res){
                 //return;
             }
 
-            User.find({}, function(err, totalUsers){
-                if(err){
-                    console.log(err);
-                    res.redirect("/");
-                    //return;
-                }
-                res.render("admin/home", {foundPolicies: policies, totalUsers: totalUsers});
-            });
+            res.render("admin/home", {foundPolicies: policies});
 
         });
     } else{
@@ -122,6 +157,28 @@ router.get('/users/:id/policies', function(req, res){
         });
     }
     
+});
+
+router.get('/admin/unverified', function(req,res){
+    User.find({isVerified: false}, function(err, foundUser){
+        if(err){
+            console.log(err);
+            req.flash("error", "Something went wrong!!");
+        }
+        //console.log(foundUser);
+        res.render("admin/unverified", {foundUser: foundUser});
+    });
+});
+
+router.get('/admin/verified', function(req,res){
+    User.find({isVerified: true}, function(err, foundUser){
+        if(err){
+            console.log(err);
+            req.flash("error", "Something went wrong!!");
+        }
+        //console.log(foundUser);
+        res.render("admin/verified", {foundUser: foundUser});
+    });
 });
 
 router.get('/users/:id/delete', middleware.isLoggedIn, function(req, res){
@@ -155,6 +212,20 @@ router.get("/users/delete/:id", function(req,res){
         });
         //eval(require('locus'));
         res.redirect("/users/"+req.user._id);
+    });
+});
+
+router.put("/users/verify/:id", function(req,res){
+
+    User.findByIdAndUpdate(req.params.id, {isVerified: true}, function(err, updatedUser){
+        if(err){
+            console.log(err);
+            req.flash("error", "Something went wrong");
+            res.redirect("/");
+        } else{
+            console.log("execute");
+            res.redirect("/user/"+updatedUser._id);
+        }
     });
 });
 
