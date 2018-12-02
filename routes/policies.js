@@ -4,6 +4,7 @@ var User=require("../models/user");
 var middleware = require("../middleware");
 
 var Policy=require("../models/policy");
+var Payement=require("../models/payement");
 
 //policy route
 router.get("/", function(req,res){
@@ -52,6 +53,8 @@ router.get("/:id/register", middleware.isLoggedIn, function(req,res){
     })
 });
 
+
+
 router.post("/:id",middleware.isLoggedIn, function(req,res){
     Policy.findById(req.params.id, function(err, foundPolicy){
         if(err){
@@ -85,7 +88,21 @@ router.post("/:id",middleware.isLoggedIn, function(req,res){
                 }
             });
             req.flash("success", "Thank You for opting a policy for a better future of your family!! Have a nice day.");
-            res.redirect("/policy/"+foundPolicy._id);
+            var newPayement=new Payement({
+                cardNo: req.body.cardNo,
+                amount: foundPolicy.installment,
+                holderName: req.body.holderName,
+                customerId: req.user._id,
+                policyId: req.params.id
+
+            });
+            Payement.create(newPayement, function(err, newPayement){
+                if(err){
+                    console.log(err);
+                    res.redirect("/policy/"+foundPolicy._id/register);
+                }
+                res.redirect("/policy/"+foundPolicy._id);
+            });
             } else {
                 req.flash("error", "Sorry!! You already have subscribed this policy");
                 res.redirect("/policy/"+foundPolicy._id);
