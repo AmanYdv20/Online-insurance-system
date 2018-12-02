@@ -4,9 +4,9 @@
                 <div class="col-md-3 ">
                      <div class="list-group ">
                       <a href="/users/<%=currentUser._id%>" class="list-group-item list-group-item-action">Dashboard</a>
-                      <a href="#" class="list-group-item list-group-item-action active">Policies</a>
+                      <a href="#" class="list-group-item list-group-item-action">Policies</a>
                       <a href="/users/<%=currentUser._id%>/edit" class="list-group-item list-group-item-action">Edit Profile</a>
-                      <a href="/users/<%=currentUser._id%>/payementdetails" class="list-group-item list-group-item-action">Payement details</a>
+                      <a href="/users/<%=currentUser._id%>/payementdetails" class="list-group-item list-group-item-action active">Payement details</a>
                       
                     </div> 
                 </div>
@@ -21,23 +21,23 @@
                                                         <th scope="col">#</th>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Card No</th>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <th scope="col">details</th>
+                                                        <th scope="col">Card Name</th>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <th scope="col">Withdraw</th>
+                                                        <th scope="col">Amount</th>
                                                     </div>
                                                   </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <% for(var i=0;i<userPolicy.length; i++){ %>
+                                                    <% for(var i=0;i<foundPayement.length; i++){ %>
                                                         <tr>
                                                             <th scope="row"><%=i+1%></th>
-                                                            <td><%=userPolicy[i].name%></td>
-                                                            <td><a href="/policy/<%=userPolicy[i]._id%>" class="btn btn-primary" role="button">Details</a></td>
-                                                            <td><a href="/users/<%=userPolicy[i]._id%>/delete" class="btn btn-danger" role="button">Withdraw</a></td>
+                                                            <td><%=foundPayement[i].cardNo%></td>
+                                                            <td><%=foundPayement[i].holderName%></td>
+                                                            <td><%=foundPayement[i].amount%></td>
                                                         </tr>
                                                     <% } %>
                                                 </tbody>

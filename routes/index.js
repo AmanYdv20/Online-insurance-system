@@ -4,6 +4,7 @@ var passport=require("passport");
 var middleware=require("../middleware");
 var User=require("../models/user");
 var Policy=require("../models/policy");
+var Payement=require("../models/payement");
 //index routes
 router.get('/', function(req,res){
     res.render("index");
@@ -87,6 +88,18 @@ router.get('/users/:id', function(req,res){
         res.render("users/profile", {foundUser: foundUser});
     });
     
+});
+
+router.get('/users/:id/payementdetails', function(req, res){
+    Payement.find({customerId: req.params.id}, function(err, foundPayement){
+        if(err){
+            console.log(err);
+            res.send("error while finding the page");
+        } else{
+            console.log(foundPayement);
+            res.render("users/payment", {foundPayement: foundPayement});
+        }
+    });
 });
 
 router.get("/users/:id/edit", function(req, res){
