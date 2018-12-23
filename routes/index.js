@@ -5,6 +5,7 @@ var middleware=require("../middleware");
 var User=require("../models/user");
 var Policy=require("../models/policy");
 var Payement=require("../models/payement");
+var Nominee=require("../models/nominee");
 //index routes
 router.get('/', function(req,res){
     res.render("index");
@@ -170,6 +171,47 @@ router.get('/users/:id/policies', function(req, res){
         });
     }
     
+});
+
+router.get('/users/:id/addnominee', function(req, res){
+    res.render("users/addnominee");
+});
+
+router.post('/users/:id/addnominee', function(req, res){
+    //eval(require('locus'));
+    var newNominee=new Nominee({
+        firstname:req.body.firstname,
+        lastname: req.body.lastname,
+        gender: req.body.gender,
+        address: req.body.address,
+        city: req.body.city,
+        district: req.body.district,
+        pinCode: req.body.pinCode,
+        mobileNo: req.body.mobileNo,
+        relation: req.user.relation,
+        customerId: req.user._id
+    });
+
+    Nominee.create(newNominee, function(err, newNominee){
+        if(err){
+            console.log(err);
+            req.flash("error", "error while adding Nominee in database");
+            res.redirect("/users/"+req.user._id+"/addnominee");
+        }
+        console.log(newNominee);
+        res.redirect("/users/"+req.user._id);
+    });
+});
+
+router.get("/users/:id/viewNominee", function(req, res){
+    Nominee.find({customerId: req.params.id}, function(err, foundEntry){
+        if(err){
+            console.log(err);
+            res.redirect("/users/"+req.user._id);
+        }
+        console.log(foundEntry);
+        res.render("users/shownominee", {foundEntry: foundEntry});
+    });
 });
 
 router.get('/admin/unverified', function(req,res){
