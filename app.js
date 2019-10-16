@@ -43,6 +43,7 @@ app.use(function (req, res, next) {
 });
 
 //seedDB();
+//new comment here
 app.use("/vehicles", vehicleRoute);
 app.use("/life", lifeRoute);
 app.use("/policy", policyRoute);
